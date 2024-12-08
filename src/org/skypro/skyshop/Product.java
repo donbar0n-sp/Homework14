@@ -1,5 +1,5 @@
 package org.skypro.skyshop;
-
+//hw14
 public class Product {
     private String name;
     private int price;
