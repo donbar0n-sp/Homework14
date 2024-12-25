@@ -1,4 +1,15 @@
 package org.skypro.skyshop;
+
+import org.skypro.skyshop.Article.Article;
+import org.skypro.skyshop.Product.DiscountedProduct;
+import org.skypro.skyshop.Product.FixedPriceProduct;
+import org.skypro.skyshop.Product.Product;
+import org.skypro.skyshop.Basket.ProductBasket;
+import org.skypro.skyshop.Product.SimpleProduct;
+import org.skypro.skyshop.Search.SearchEngine;
+
+import java.util.Arrays;
+
 //hw14
 public class App {
     public static void main(String[] args) {
@@ -40,5 +51,32 @@ public class App {
 
         System.out.println("\nПоиск товара по имени в пустой корзине:");
         System.out.println("Есть 'Яблоко' в пустой корзине? " + basket.hasProduct("Яблоко"));
+
+        SearchEngine searchEngine = new SearchEngine(10);
+
+        searchEngine.addItem( apple );
+        searchEngine.addItem( banana );
+        searchEngine.addItem( orange );
+        searchEngine.addItem( grape );
+        searchEngine.addItem( mango );
+        searchEngine.addItem( watermelon );
+
+        Article article = new Article("Яблоко: Полезные свойства", "Яблоки помогают поддерживать здоровье сердца.");
+        Article article1 = new Article("Витамины в бананах", "Бананы богаты калием и полезны для восстановления мышц.");
+
+        searchEngine.addItem(article);
+        searchEngine.addItem(article1);
+
+        System.out.println("\nРезультаты поиска для 'яблоко':");
+        System.out.println(Arrays.toString(searchEngine.search("Яблоко")));
+
+        System.out.println("\nРезультаты поиска для 'бан':");
+        System.out.println(Arrays.toString(searchEngine.search("бан")));
+
+        System.out.println("\nРезультаты поиска для 'Апельсин':");
+        System.out.println(Arrays.toString(searchEngine.search("Апельсин")));
+
+        System.out.println("\nРезультаты поиска для 'Здоровье':");
+        System.out.println(Arrays.toString(searchEngine.search("Здоровье")));
     }
 }
