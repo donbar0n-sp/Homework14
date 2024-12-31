@@ -1,6 +1,6 @@
-package org.skypro.skyshop;
+package org.skypro.skyshop.Product;
 
-public class DiscountedProduct extends Product{
+public class DiscountedProduct extends Product {
     private int basePrice;
     private int percentageDiscount;
 
