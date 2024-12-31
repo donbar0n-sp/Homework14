@@ -7,6 +7,7 @@ import org.skypro.skyshop.Product.Product;
 import org.skypro.skyshop.Basket.ProductBasket;
 import org.skypro.skyshop.Product.SimpleProduct;
 import org.skypro.skyshop.Search.SearchEngine;
+import org.skypro.skyshop.Exceptions.BestResultNotFound;
 
 import java.util.Arrays;
 
@@ -78,5 +79,44 @@ public class App {
 
         System.out.println("\nРезультаты поиска для 'Здоровье':");
         System.out.println(Arrays.toString(searchEngine.search("Здоровье")));
+
+        try {
+            Product invalidProduct = new SimpleProduct("   ", 100);
+        } catch (IllegalArgumentException e) {
+            System.out.println("\nОшибка: " + e.getMessage());
+        }
+
+        try {
+            Product invalidPriceProduct = new SimpleProduct("Неверный", -50);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        try {
+            Product invalidDiscountProduct = new DiscountedProduct("Банан", 50, 150);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        try {
+            Product anotherInvalidProduct = new DiscountedProduct("", 50, 20);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        try {
+            System.out.println("\nНаиболее подходящий результат для 'ябл':");
+            System.out.println(searchEngine.findMostRelevant("ябл").getStringRepresentation());
+        } catch (BestResultNotFound e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        try {
+            System.out.println("\nНаиболее подходящий результат для 'пустой':");
+            System.out.println(searchEngine.findMostRelevant("пустой").getStringRepresentation());
+        } catch (BestResultNotFound e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
     }
 }
