@@ -8,10 +8,10 @@ import org.skypro.skyshop.Basket.ProductBasket;
 import org.skypro.skyshop.Product.SimpleProduct;
 import org.skypro.skyshop.Search.SearchEngine;
 import org.skypro.skyshop.Exceptions.BestResultNotFound;
+import org.skypro.skyshop.Search.Searchable;
 
-import java.util.Arrays;
+import java.util.List;
 
-//hw14
 public class App {
     public static void main(String[] args) {
 
@@ -30,10 +30,30 @@ public class App {
         basket.addProduct(orange);
         basket.addProduct(grape);
         basket.addProduct(mango);
-
         basket.addProduct(watermelon);
 
         System.out.println("\nСодержимое корзины:");
+        basket.printBasketContents();
+
+        System.out.println("\nДемонстрация метода удаления продуктов:");
+
+        System.out.println("\nУдаление продукта 'Банан':");
+        List<Product> removedProducts = basket.removeProduct("Банан");
+        if (!removedProducts.isEmpty()) {
+            System.out.println("Удаленные продукты:");
+            for (Product product : removedProducts) {
+                System.out.println(product.toString());
+            }
+        }
+        System.out.println("\nСодержимое корзины после удаления:");
+        basket.printBasketContents();
+
+        System.out.println("\nПопытка удалить несуществующий продукт 'Ананас':");
+        removedProducts = basket.removeProduct("Ананас");
+        if (removedProducts.isEmpty()) {
+            System.out.println("Список пуст");
+        }
+        System.out.println("\nСодержимое корзины после попытки удалить несуществующий продукт:");
         basket.printBasketContents();
 
         System.out.println("\nСтоимость корзины: " + basket.getTotalPrice());
@@ -53,7 +73,7 @@ public class App {
         System.out.println("\nПоиск товара по имени в пустой корзине:");
         System.out.println("Есть 'Яблоко' в пустой корзине? " + basket.hasProduct("Яблоко"));
 
-        SearchEngine searchEngine = new SearchEngine(10);
+        SearchEngine searchEngine = new SearchEngine();
 
         searchEngine.addItem( apple );
         searchEngine.addItem( banana );
@@ -69,16 +89,28 @@ public class App {
         searchEngine.addItem(article1);
 
         System.out.println("\nРезультаты поиска для 'яблоко':");
-        System.out.println(Arrays.toString(searchEngine.search("Яблоко")));
+        List<Searchable> searchResults = searchEngine.search("Яблоко");
+        for (Searchable result : searchResults) {
+            System.out.println(result.getStringRepresentation());
+        }
 
         System.out.println("\nРезультаты поиска для 'бан':");
-        System.out.println(Arrays.toString(searchEngine.search("бан")));
+        searchResults = searchEngine.search("бан");
+        for (Searchable result : searchResults) {
+            System.out.println(result.getStringRepresentation());
+        }
 
         System.out.println("\nРезультаты поиска для 'Апельсин':");
-        System.out.println(Arrays.toString(searchEngine.search("Апельсин")));
+        searchResults = searchEngine.search("Апельсин");
+        for (Searchable result : searchResults) {
+            System.out.println(result.getStringRepresentation());
+        }
 
         System.out.println("\nРезультаты поиска для 'Здоровье':");
-        System.out.println(Arrays.toString(searchEngine.search("Здоровье")));
+        searchResults = searchEngine.search("Здоровье");
+        for (Searchable result : searchResults) {
+            System.out.println(result.getStringRepresentation());
+        }
 
         try {
             Product invalidProduct = new SimpleProduct("   ", 100);
