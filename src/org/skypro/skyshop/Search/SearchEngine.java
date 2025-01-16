@@ -1,48 +1,40 @@
 package org.skypro.skyshop.Search;
 import org.skypro.skyshop.Exceptions.BestResultNotFound;
 
-public class SearchEngine {
-    private final Searchable[] items;
-    private int count;
+import java.util.ArrayList;
+import java.util.List;
 
-    public SearchEngine(int size) {
-        this.items = new Searchable[size];
-        this.count = 0;
+public class SearchEngine {
+    private final List<Searchable> items;
+
+    public SearchEngine() {
+        this.items = new ArrayList<>();
     }
 
-    public Searchable[] search(String searchTerm) {
-        Searchable[] results = new Searchable[5];
-        int resultCount = 0;
+    public List<Searchable> search(String searchTerm) {
+        List<Searchable> results = new ArrayList<>();
 
-        for (int i = 0; i < count; i++) {
-            if (items[i].getSearchTerm().toLowerCase().contains(searchTerm.toLowerCase())) {
-                results[resultCount] = items[i];
-                resultCount++;
-                if (resultCount >= 5) {
-                    break;
-                }
+        for (Searchable item : items) {
+            if (item.getSearchTerm().toLowerCase().contains(searchTerm.toLowerCase())) {
+                results.add(item);
             }
         }
         return results;
     }
 
     public void addItem(Searchable item) {
-        if (count >= items.length) {
-            return;
-        }
-        items[count] = item;
-        count++;
+        items.add(item);
     }
 
     public Searchable findMostRelevant(String search) throws BestResultNotFound {
         int maxRepetitions = 0;
         Searchable mostRelevant = null;
 
-        for (int i = 0; i < count; i++) {
-            int repetitions = countOccurrences(items[i].getSearchTerm().toLowerCase(), search.toLowerCase());
+        for (Searchable item : items) {
+            int repetitions = countOccurrences(item.getSearchTerm().toLowerCase(), search.toLowerCase());
             if (repetitions > maxRepetitions) {
                 maxRepetitions = repetitions;
-                mostRelevant = items[i];
+                mostRelevant = item;
             }
         }
         if (mostRelevant == null) {
