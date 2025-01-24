@@ -11,6 +11,7 @@ import org.skypro.skyshop.Exceptions.BestResultNotFound;
 import org.skypro.skyshop.Search.Searchable;
 
 import java.util.List;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) {
@@ -89,26 +90,26 @@ public class App {
         searchEngine.addItem(article1);
 
         System.out.println("\nРезультаты поиска для 'яблоко':");
-        List<Searchable> searchResults = searchEngine.search("Яблоко");
-        for (Searchable result : searchResults) {
+        Map<String, Searchable> searchResults = searchEngine.search("Яблоко");
+        for (Searchable result : searchResults.values()) {
             System.out.println(result.getStringRepresentation());
         }
 
         System.out.println("\nРезультаты поиска для 'бан':");
         searchResults = searchEngine.search("бан");
-        for (Searchable result : searchResults) {
+        for (Searchable result : searchResults.values()) {
             System.out.println(result.getStringRepresentation());
         }
 
         System.out.println("\nРезультаты поиска для 'Апельсин':");
         searchResults = searchEngine.search("Апельсин");
-        for (Searchable result : searchResults) {
+        for (Searchable result : searchResults.values()) {
             System.out.println(result.getStringRepresentation());
         }
 
         System.out.println("\nРезультаты поиска для 'Здоровье':");
         searchResults = searchEngine.search("Здоровье");
-        for (Searchable result : searchResults) {
+        for (Searchable result : searchResults.values()) {
             System.out.println(result.getStringRepresentation());
         }
 
