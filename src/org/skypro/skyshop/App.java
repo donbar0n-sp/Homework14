@@ -11,7 +11,7 @@ import org.skypro.skyshop.Exceptions.BestResultNotFound;
 import org.skypro.skyshop.Search.Searchable;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class App {
     public static void main(String[] args) {
@@ -90,26 +90,26 @@ public class App {
         searchEngine.addItem(article1);
 
         System.out.println("\nРезультаты поиска для 'яблоко':");
-        Map<String, Searchable> searchResults = searchEngine.search("Яблоко");
-        for (Searchable result : searchResults.values()) {
+        Set<Searchable> searchResults = searchEngine.search("Яблоко");
+        for (Searchable result : searchResults) {
             System.out.println(result.getStringRepresentation());
         }
 
         System.out.println("\nРезультаты поиска для 'бан':");
         searchResults = searchEngine.search("бан");
-        for (Searchable result : searchResults.values()) {
+        for (Searchable result : searchResults) {
             System.out.println(result.getStringRepresentation());
         }
 
         System.out.println("\nРезультаты поиска для 'Апельсин':");
         searchResults = searchEngine.search("Апельсин");
-        for (Searchable result : searchResults.values()) {
+        for (Searchable result : searchResults) {
             System.out.println(result.getStringRepresentation());
         }
 
         System.out.println("\nРезультаты поиска для 'Здоровье':");
         searchResults = searchEngine.search("Здоровье");
-        for (Searchable result : searchResults.values()) {
+        for (Searchable result : searchResults) {
             System.out.println(result.getStringRepresentation());
         }
 
@@ -149,6 +149,29 @@ public class App {
             System.out.println(searchEngine.findMostRelevant("пустой").getStringRepresentation());
         } catch (BestResultNotFound e) {
             System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        System.out.println("\n--- Тест сортировки результатов поиска ---");
+
+        Article article2 = new Article("Короткое", "Статья с коротким названием.");
+        Article article3 = new Article("Очень длинное название статьи", "Статья с длинным названием.");
+        Article article4 = new Article("Среднее название", "Статья со средним названием.");
+
+        searchEngine.addItem(article2);
+        searchEngine.addItem(article3);
+        searchEngine.addItem(article4);
+
+        Set<Searchable> sortedResults = searchEngine.search("название");
+
+        System.out.println("\nРезультаты поиска по слову 'название':");
+        for (Searchable result : sortedResults) {
+            System.out.println(result.getStringRepresentation());
+        }
+
+        System.out.println("\nРезультаты поиска для 'на':");
+        Set<Searchable> partialMatchResults = searchEngine.search("на");
+        for (Searchable result : partialMatchResults) {
+            System.out.println(result.getStringRepresentation());
         }
 
     }
