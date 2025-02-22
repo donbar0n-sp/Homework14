@@ -2,6 +2,7 @@ package org.skypro.skyshop.Search;
 import org.skypro.skyshop.Exceptions.BestResultNotFound;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
     private final Set<Searchable> items;
@@ -11,14 +12,9 @@ public class SearchEngine {
     }
 
     public Set<Searchable> search(String searchTerm) {
-        Set<Searchable> results = new TreeSet<>(new SearchableComparator());
-
-        for (Searchable item : items) {
-            if (item.getSearchTerm().toLowerCase().contains(searchTerm.toLowerCase())) {
-                results.add(item);
-            }
-        }
-        return results;
+            return items.stream()
+                    .filter(item -> item.getSearchTerm().toLowerCase().contains(searchTerm.toLowerCase()))
+                    .collect(Collectors.toCollection(() -> new TreeSet<>(new SearchableComparator())));
     }
 
     public void addItem(Searchable item) {
@@ -26,20 +22,9 @@ public class SearchEngine {
     }
 
     public Searchable findMostRelevant(String search) throws BestResultNotFound {
-        int maxRepetitions = 0;
-        Searchable mostRelevant = null;
-
-        for (Searchable item : items) {
-            int repetitions = countOccurrences(item.getSearchTerm().toLowerCase(), search.toLowerCase());
-            if (repetitions > maxRepetitions) {
-                maxRepetitions = repetitions;
-                mostRelevant = item;
-            }
-        }
-        if (mostRelevant == null) {
-            throw new BestResultNotFound(search);
-        }
-        return mostRelevant;
+        return items.stream()
+                .max(Comparator.comparingInt(item -> countOccurrences(item.getSearchTerm().toLowerCase(), search.toLowerCase())))
+                .orElseThrow(() -> new BestResultNotFound(search));
     }
 
     private int countOccurrences(String str, String substring) {
